@@ -280,7 +280,10 @@ function Invoke-Sqlcmd2 {
 		[Parameter( Position=11,
 			Mandatory=$false )]
 		[Alias( 'Application', 'AppName' )]
-		[String]$ApplicationName
+		[String]$ApplicationName,
+		[Parameter(Position=12, Mandatory=$false)]
+		[Alias('TrustServerCertificate')]
+		[Switch]$TrustServerCert
 	)
 	
 	begin {
@@ -398,6 +401,9 @@ function Invoke-Sqlcmd2 {
 					if ($ScriptName -ne "<ScriptBlock>") {
 						$CSBuilder["Application Name"] = $ScriptName
 					}
+				}
+				if ($TrustServerCert) {
+					$CSBuilder["TrustServerCertificate"]=$true;
 				}
 				$conn = New-Object -TypeName System.Data.SqlClient.SQLConnection
 				
